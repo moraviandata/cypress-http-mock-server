@@ -1,5 +1,13 @@
-// import { Greeter } from '../index';
+import axios from 'axios';
 
-// test('My Greeter', () => {
-//   expect(Greeter('Carl')).toBe('Hello Carl');
-// });
+import { HttpMockServer } from '../index';
+
+test('Cypress http mock server', async () => {
+  const server = new HttpMockServer()
+  await server.start()
+
+  const response = await axios.get('http://localhost:3000');
+  expect(response.status).toBe(200)
+
+  server.stop()  
+});

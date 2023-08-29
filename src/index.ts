@@ -14,21 +14,27 @@ interface HttpMockServerResponse{
 }
 
 class HttpMockServer{
+    private server? : http.Server
+
     constructor(){
 
     }
 
-    startServer(port : number = 3000) : void {
+    start(port : number = 3000) : void {
         const hostname : string = '0.0.0.0';
 
-        const server : http.Server = http.createServer((req, res) => {
+        this.server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'text/plain' });
             res.end('Hello, this is your simple TypeScript HTTP server!\n');
           });
     
-        server.listen(port, () => {
+        this.server.listen(port, () => {
             console.log(`Cypress-http-mock-server is listening on ${hostname}:${port}.`)
         })
+    }
+
+    stop(){
+        this.server?.close()
     }
 }
 
