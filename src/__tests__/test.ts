@@ -52,9 +52,5 @@ describe("Cypress http mock server end to end test", () => {
 		expect(secondMockRequest.method).toEqual("PUT")
 		expect(secondMockRequest.path).toEqual("/api")
 	})
-
-	it("Reset", () => {
-
-	})
 });
 

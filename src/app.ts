@@ -68,6 +68,7 @@ interface RegisterApiRequest {
 app.post(RESET_PATH, (req: Request, res: Response) => {
     let storage: Map<string, HttpMockServerResponse> = req.app.get('storage')
     storage.clear()
+    console.log("reseting mocked routes\n")
     res.status(200).send()
 })
 
@@ -76,7 +77,6 @@ app.post(REGISTER_PATH, (req: Request<{}, {}, RegisterApiRequest>, res: Response
 
     let storage: Map<string, HttpMockServerResponse> = req.app.get('storage')
 
-    ///TODO
     const request : HttpMockServerRequest = new HttpMockServerRequest({
         method: parsedBody.method ?? "GET",
         path: parsedBody.path,
@@ -90,7 +90,7 @@ app.post(REGISTER_PATH, (req: Request<{}, {}, RegisterApiRequest>, res: Response
     }
 
     storage.set(request.convertToString(), response)
-    console.log(storage)
+    console.log(`Registered mocked response: method: ${request.method}, path: ${request.path}`)
     res.status(200).send()
 })
 
@@ -101,11 +101,8 @@ app.all('*', (req: Request, res: Response) => {
     })
 
     let storage: Map<string, HttpMockServerResponse> = req.app.get('storage')
-    console.log(storage)
 
-    console.log(`request: ${request.method}, ${request.path}`)
     let storedResponse: HttpMockServerResponse | undefined = storage.get(request.convertToString())
-    console.log(`storedResponse: ${storedResponse}`)
 
     if (storedResponse === undefined) {
         res.status(404).send()
