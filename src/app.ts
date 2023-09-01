@@ -5,7 +5,7 @@ import { parse } from 'path';
 const app: Application = express();
 app.use(express.json())
 
-var _storage = new Map<string, HttpMockServerResponse>()
+const _storage = new Map<string, HttpMockServerResponse>()
 app.set('storage', _storage)
 
 interface HttpMockServerRequestArgs {

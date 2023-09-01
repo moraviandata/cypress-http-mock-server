@@ -1,0 +1,46 @@
+version: 2.1
+
+jobs:
+  test-push-dockerhub:
+    resource_class: medium
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+
+      # install dependencies
+      - restore_cache:
+          key: v1-cypress-http-mock-server-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install npm dependencies
+          command: npm install
+      - save_cache:
+          key: v1-cypress-http-mock-server-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - /home/circleci/.cache
+      
+      # run tests
+      - run:
+          name: Jest unit tests
+          command: npm test
+
+      # build docker image
+      - run:
+          name: Build docker image
+          command: docker build . -t moraviandata/cypress-http-mock-server:latest
+
+      # push it to docker hub
+      - run:
+          name: Login to docker hub
+          command: echo "$DOCKER_TOKEN" | docker login -u birdthedeveloper --password-stdin
+      - run:
+          name: Push it to docker hub
+          command: docker push moraviandata/cypress-http-mock-server:latest
+
+workflows:
+  cypress-http-mock-server-ci:
+    jobs:
+      - test-push-dockerhub:
+          context:
+            - docker-hub-write
