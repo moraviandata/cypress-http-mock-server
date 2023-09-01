@@ -47,9 +47,14 @@
   "dependencies": {
     "@types/express": "^4.17.17",
     "@types/http-server": "^0.12.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "ts-command-line-args": "^2.5.1",
+    "yargs": "13.2"
   },
   "jest": {
     "testTimeout": 5000
+  },
+  "bin": {
+    "cypress-http-mock-server": "./lib/index.js"
   }
 }
