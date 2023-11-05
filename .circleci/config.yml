@@ -28,7 +28,7 @@ jobs:
       # build docker image
       - run:
           name: Build docker image
-          command: docker build . -t moraviandata/cypress-http-mock-server:latest
+          command: docker build . -t birdthedeveloper/moraviandata:cypress-http-mock-server-latest
 
       # push it to docker hub
       - run:
@@ -36,7 +36,7 @@ jobs:
           command: echo "$DOCKER_TOKEN" | docker login -u birdthedeveloper --password-stdin
       - run:
           name: Push it to docker hub
-          command: docker push moraviandata/cypress-http-mock-server:latest
+          command: docker push birdthedeveloper/moraviandata:cypress-http-mock-server-latest
 
 workflows:
   cypress-http-mock-server-ci:
